@@ -1,0 +1,489 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container bg-content rounded-3 p-4 mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="text-accent mb-3" style="color: #DFFF34; font-weight: 800;">
+                <i class="fas fa-chart-line me-2" style="color: #26ff5f;"></i>
+                Sports Authority of India - Admin Dashboard
+            </h2>
+            <p class="text-white mb-0" style="color: #e8e8e8;">Monitor athlete performance and track national talent</p>
+        </div>
+    </div>
+
+    <!-- Daily Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card bg-dark stat-card" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-body text-center">
+                    <i class="fas fa-users text-accent fa-2x mb-2" style="color: #26ff5f;"></i>
+                    <h3 class="text-accent" style="color: #26ff5f;">{{ daily_stats.active_users }}</h3>
+                    <p class="text-muted mb-0" style="color: #e8e8e8;">Active Athletes Today</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card bg-dark stat-card" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-body text-center">
+                    <i class="fas fa-play-circle text-accent fa-2x mb-2" style="color: #26ff5f;"></i>
+                    <h3 class="text-accent" style="color: #26ff5f;">{{ daily_stats.total_sessions }}</h3>
+                    <p class="text-muted mb-0" style="color: #e8e8e8;">Sessions Today</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card bg-dark stat-card" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-body text-center">
+                    <i class="fas fa-dumbbell text-accent fa-2x mb-2" style="color: #26ff5f;"></i>
+                    <h3 class="text-accent" style="color: #26ff5f;">{{ daily_stats.total_exercises }}</h3>
+                    <p class="text-muted mb-0" style="color: #e8e8e8;">Total Reps Today</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card bg-dark stat-card" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-body text-center">
+                    <i class="fas fa-trophy text-accent fa-2x mb-2" style="color: #26ff5f;"></i>
+                    <h4 class="text-accent" style="color: #26ff5f;">{{ daily_stats.target }}</h4>
+                    <p class="text-muted mb-0" style="color: #e8e8e8;">Most Popular Exercise</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Real-time Charts Row -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <div class="card bg-dark chart-card" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <h5 class="mb-0" style="color: #171e24;">
+                        <i class="fas fa-chart-pie me-2"></i>
+                        Exercise Popularity
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="exerciseChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card bg-dark chart-card" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <h5 class="mb-0" style="color: #171e24;">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        Regional Performance
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="regionalChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Athletes Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-dark table-card" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent d-flex justify-content-between align-items-center" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <h4 class="mb-0" style="color: #171e24;">
+                        <i class="fas fa-medal me-2"></i>
+                        Top Athletes Leaderboard
+                    </h4>
+                    <div class="btn-group">
+                        <a href="/api/export_report" class="btn btn-sm" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;">
+                            <i class="fas fa-download"></i> Export CSV
+                        </a>
+                        <a href="/export_report_pdf" class="btn btn-sm ms-2" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;">
+                            <i class="fas fa-file-pdf"></i> Export PDF
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover" style="background: #171a21;">
+                            <thead class="table-header" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24;">
+                                <tr>
+                                    <th style="color: #171e24;">Rank</th>
+                                    <th style="color: #171e24;">Name</th>
+                                    <th style="color: #171e24;">Location</th>
+                                    <th style="color: #171e24;">Age</th>
+                                    <th style="color: #171e24;">Points</th>
+                                    <th style="color: #171e24;">Badges</th>
+                                    <th style="color: #171e24;">Streak</th>
+                                    <th style="color: #171e24;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in top_users %}
+                                <tr class="table-row">
+                                    <td class="fw-bold rank-cell" style="color: #e8e8e8;">
+                                        {% if loop.index == 1 %}
+                                            <i class="fas fa-crown text-warning" style="color: #ffe648;"></i> #1
+                                        {% elif loop.index == 2 %}
+                                            <i class="fas fa-medal text-secondary" style="color: #e8e8e8;"></i> #2
+                                        {% elif loop.index == 3 %}
+                                            <i class="fas fa-medal text-warning" style="color: #ffe648;"></i> #3
+                                        {% else %}
+                                            #{{ loop.index }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="name-cell" style="color: #e8e8e8;">
+                                        {{ user.name }}
+                                        {% if loop.index <= 3 %}
+                                            <span class="badge ms-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px;">Top Performer</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="color: #e8e8e8;">{{ user.location or 'Not specified' }}</td>
+                                    <td style="color: #e8e8e8;">{{ user.age or 'N/A' }}</td>
+                                    <td><span class="text-accent fw-bold points-cell" style="color: #26ff5f;">{{ user.points }}</span></td>
+                                    <td><span class="badge" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px;">{{ user.badges }}</span></td>
+                                    <td style="color: #e8e8e8;">{{ user.streak }} days</td>
+                                    <td>
+                                        <button class="btn btn-sm" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px;" 
+                                                onclick="viewUserDetails('{{ user.user_id }}')">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Statistics -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card bg-dark summary-card" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-body">
+                    <h5 class="text-accent mb-3" style="color: #DFFF34; font-weight: 800;">
+                        <i class="fas fa-chart-bar me-2" style="color: #26ff5f;"></i>
+                        Platform Statistics
+                    </h5>
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="stat-item" style="padding: 1.5rem; border-radius: 10px; background: #1f2229; border: 1px solid #26ff5f; margin: 0.5rem 0;">
+                                <h3 class="text-accent" style="color: #26ff5f;">{{ top_users|length }}</h3>
+                                <p class="text-muted" style="color: #e8e8e8;">Total Athletes</p>
+                                <div class="stat-progress" style="width: 100%; height: 4px; background: #171a21; border-radius: 2px; overflow: hidden; margin-top: 10px;">
+                                    <div class="stat-progress-bar" style="height: 100%; background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); border-radius: 2px; width: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-item" style="padding: 1.5rem; border-radius: 10px; background: #1f2229; border: 1px solid #26ff5f; margin: 0.5rem 0;">
+                                <h3 class="text-accent" style="color: #26ff5f;">{{ top_users|sum(attribute='points') }}</h3>
+                                <p class="text-muted" style="color: #e8e8e8;">Total Points Earned</p>
+                                <div class="stat-progress" style="width: 100%; height: 4px; background: #171a21; border-radius: 2px; overflow: hidden; margin-top: 10px;">
+                                    <div class="stat-progress-bar" style="height: 100%; background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); border-radius: 2px; width: 85%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-item" style="padding: 1.5rem; border-radius: 10px; background: #1f2229; border: 1px solid #26ff5f; margin: 0.5rem 0;">
+                                <h3 class="text-accent" style="color: #26ff5f;">{{ top_users|sum(attribute='badges') }}</h3>
+                                <p class="text-muted" style="color: #e8e8e8;">Total Badges Awarded</p>
+                                <div class="stat-progress" style="width: 100%; height: 4px; background: #171a21; border-radius: 2px; overflow: hidden; margin-top: 10px;">
+                                    <div class="stat-progress-bar" style="height: 100%; background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); border-radius: 2px; width: 70%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Details Modal -->
+<div class="modal fade" id="userDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-custom" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+            <div class="modal-header" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                <h5 class="modal-title" style="color: #171e24;">
+                    <i class="fas fa-user me-2"></i>
+                    Athlete Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
+            </div>
+            <div class="modal-body" id="userDetailsContent" style="background: #171a21; color: #e8e8e8;">
+                <div class="text-center">
+                    <div class="spinner-border" role="status" style="color: #26ff5f;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-white mt-2" style="color: #e8e8e8;">Loading athlete details...</p>
+                </div>
+            </div>
+            <div class="modal-footer" style="background: #171a21; border-top: 1px solid #26ff5f;">
+                <button type="button" class="btn" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// FIXED: Enhanced user details modal with better error handling
+function viewUserDetails(userId) {
+    console.log('Loading details for user:', userId);
+    
+    if (!userId) {
+        alert('Invalid user ID');
+        return;
+    }
+    
+    // Show modal with loading state
+    const modal = new bootstrap.Modal(document.getElementById('userDetailsModal'));
+    document.getElementById('userDetailsContent').innerHTML = `
+        <div class="text-center">
+            <div class="spinner-border" role="status" style="color: #26ff5f;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text-white mt-2" style="color: #e8e8e8;">Loading athlete details...</p>
+        </div>
+    `;
+    modal.show();
+    
+    // Fetch user details
+    fetch(`/api/user_details/${userId}`)
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Received user data:', data);
+            displayUserDetails(data);
+        })
+        .catch(error => {
+            console.error('Error fetching user details:', error);
+            document.getElementById('userDetailsContent').innerHTML = `
+                <div class="alert" style="border: 1px solid #e74c3c; background: rgba(231, 76, 60, 0.1); color: #e8e8e8; border-radius: 10px; padding: 1rem;">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Error loading athlete details:</strong> ${error.message}
+                    <br><small>Please try again or contact support if the issue persists.</small>
+                </div>
+            `;
+        });
+}
+
+function displayUserDetails(data) {
+    const exerciseRows = data.exercises.map(ex => `
+        <tr>
+            <td style="color: #e8e8e8;">${ex.type}</td>
+            <td style="color: #e8e8e8;">${ex.count}</td>
+            <td style="color: #e8e8e8;">${ex.score || 'N/A'}</td>
+            <td style="color: #e8e8e8;">${ex.timestamp ? new Date(ex.timestamp).toLocaleDateString() : 'N/A'}</td>
+        </tr>
+    `).join('');
+
+    const badgesList = data.badges.map(badge => 
+        `<span class="badge me-2 mb-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px;">${badge}</span>`
+    ).join('');
+
+    const content = `
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="section-title" style="color: #DFFF34; border-bottom: 1px solid #26ff5f; padding-bottom: 5px; font-weight: 800;">Personal Information</h6>
+                <ul class="list-unstyled info-list">
+                    <li style="padding: 3px 0; color: #e8e8e8;"><strong>Name:</strong> ${data.name}</li>
+                    <li style="padding: 3px 0; color: #e8e8e8;"><strong>Email:</strong> ${data.email}</li>
+                    <li style="padding: 3px 0; color: #e8e8e8;"><strong>Age:</strong> ${data.age}</li>
+                    <li style="padding: 3px 0; color: #e8e8e8;"><strong>Gender:</strong> ${data.gender}</li>
+                    <li style="padding: 3px 0; color: #e8e8e8;"><strong>Location:</strong> ${data.location}</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h6 class="section-title" style="color: #DFFF34; border-bottom: 1px solid #26ff5f; padding-bottom: 5px; font-weight: 800;">Performance Metrics</h6>
+                <ul class="list-unstyled info-list">
+                    <li style="padding: 3px 0; color: #e8e8e8;"><strong>Points:</strong> <span class="fw-bold" style="color: #26ff5f;">${data.points}</span></li>
+                    <li style="padding: 3px 0; color: #e8e8e8;"><strong>Level:</strong> ${data.level}</li>
+                    <li style="padding: 3px 0; color: #e8e8e8;"><strong>Current Streak:</strong> ${data.streak} days</li>
+                    <li style="padding: 3px 0; color: #e8e8e8;"><strong>Total Badges:</strong> ${data.badges.length}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <h6 class="section-title" style="color: #DFFF34; border-bottom: 1px solid #26ff5f; padding-bottom: 5px; font-weight: 800;">Badges Earned</h6>
+                <div class="badges-container mb-3">
+                    ${badgesList || '<span style="color: #e8e8e8;">No badges earned yet</span>'}
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <h6 class="section-title" style="color: #DFFF34; border-bottom: 1px solid #26ff5f; padding-bottom: 5px; font-weight: 800;">Recent Exercise History</h6>
+                <div class="table-responsive">
+                    <table class="table table-dark table-sm" style="background: #1f2229; border: 1px solid #26ff5f;">
+                        <thead style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24;">
+                            <tr>
+                                <th style="color: #171e24;">Exercise</th>
+                                <th style="color: #171e24;">Count</th>
+                                <th style="color: #171e24;">Score</th>
+                                <th style="color: #171e24;">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${exerciseRows || '<tr><td colspan="4" style="color: #e8e8e8;">No exercises recorded</td></tr>'}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('userDetailsContent').innerHTML = content;
+}
+
+// Initialize real-time charts
+let exerciseChart, regionalChart;
+
+function initializeCharts() {
+    // Exercise Popularity Chart
+const exerciseCtx = document.getElementById('exerciseChart').getContext('2d');
+exerciseChart = new Chart(exerciseCtx, {
+    type: 'doughnut',
+    data: {
+        labels: [],
+        datasets: [{
+            data: [],
+            backgroundColor: [
+                '#26ff5f',    // neon green
+                '#ffe648',    // yellow
+                '#DFFF34',    // bright lime
+                '#ff6f61',    // coral red
+                '#1f2229',    // dark gray
+                '#1768ac',    // blue
+                '#e06c75',    // pastel red/pink
+                '#c678dd',    // pastel purple
+                '#61afef',    // pastel blue
+                '#98c379'     // soft green
+            ],
+            borderColor: '#26ff5f',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#e8e8e8'
+                }
+            }
+        }
+    }
+});
+
+    // Regional Performance Chart
+    const regionalCtx = document.getElementById('regionalChart').getContext('2d');
+    regionalChart = new Chart(regionalCtx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Average Points',
+                data: [],
+                backgroundColor: 'rgba(38, 255, 95, 0.6)',
+                borderColor: '#26ff5f',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#e8e8e8'
+                    },
+                    grid: {
+                        color: 'rgba(38, 255, 95, 0.1)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#e8e8e8'
+                    },
+                    grid: {
+                        color: 'rgba(38, 255, 95, 0.1)'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#e8e8e8'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function updateCharts() {
+    // Update Exercise Popularity Chart
+    fetch('/api/chart_data/exercise_popularity')
+        .then(response => response.json())
+        .then(data => {
+            exerciseChart.data.labels = Object.keys(data).map(key => key.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()));
+            exerciseChart.data.datasets[0].data = Object.values(data);
+            exerciseChart.update();
+        })
+        .catch(error => console.error('Error updating exercise chart:', error));
+
+    // Update Regional Performance Chart
+    fetch('/api/chart_data/regional_performance')
+        .then(response => response.json())
+        .then(data => {
+            regionalChart.data.labels = Object.keys(data);
+            regionalChart.data.datasets[0].data = Object.values(data).map(region => region.avg_points || 0);
+            regionalChart.update();
+        })
+        .catch(error => console.error('Error updating regional chart:', error));
+}
+
+// Initialize everything when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    initializeCharts();
+    updateCharts();
+    
+    // Update charts every 30 seconds
+    setInterval(updateCharts, 30000);
+    
+    // Add simple hover effects to table rows
+    document.querySelectorAll('.table-row').forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = 'rgba(38, 255, 95, 0.1)';
+            this.style.transform = 'translateX(2px)';
+            this.style.transition = 'all 0.3s ease';
+        });
+        
+        row.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '';
+            this.style.transform = 'translateX(0)';
+        });
+    });
+    
+    // Initialize tooltips if Bootstrap is available
+    if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    }
+});
+</script>
+{% endblock %}

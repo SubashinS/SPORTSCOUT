@@ -1,0 +1,425 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container bg-content rounded-3 p-4 mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-accent mb-3" style="color: #DFFF34; font-weight: 800;">Welcome back, {{ username }}!</h2>
+            <p class="text-white mb-4" style="color: #e8e8e8;">THIS IS YOUR DASHBOARD. START A TEST OR CHECK THE LEADERBOARD</p>
+        </div>
+    </div>
+
+    <!-- Gamification Stats Row -->
+    <div class="row mb-4 stats-row">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card text-center stat-card" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-body">
+                    <i class="fas fa-star text-accent fa-2x mb-2" style="color: #26ff5f;"></i>
+                    <h3 class="text-accent" style="color: #26ff5f;">{{ points }}</h3>
+                    <p class="text-muted mb-0" style="color: #e8e8e8;">Total Points</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card text-center stat-card" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-body">
+                    <i class="fas fa-medal text-accent fa-2x mb-2" style="color: #26ff5f;"></i>
+                    <h3 class="text-accent" style="color: #26ff5f;">{{ badges|length }}</h3>
+                    <p class="text-muted mb-0" style="color: #e8e8e8;">Badges Earned</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card text-center stat-card" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-body">
+                    <i class="fas fa-fire text-accent fa-2x mb-2" style="color: #26ff5f;"></i>
+                    <h3 class="text-accent" style="color: #26ff5f;">{{ streak }}</h3>
+                    <p class="text-muted mb-0" style="color: #e8e8e8;">Day Streak</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card text-center stat-card" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-body">
+                    <i class="fas fa-trophy text-accent fa-2x mb-2" style="color: #26ff5f;"></i>
+                    <h3 class="text-accent" style="color: #26ff5f;">{{ (points // 1000) + 1 }}</h3>
+                    <p class="text-muted mb-0" style="color: #e8e8e8;">Current Level</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exercise Cards Row -->
+    <div class="row">
+        <!-- Core Strength -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card exercise-card h-100" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent text-center" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <i class="fas fa-dumbbell fa-2x mb-2" style="color: #171e24;"></i>
+                    <h5 class="mb-0" style="color: #171e24;">Sit-up</h5>
+                    <small style="color: #171e24;">Core Strength</small>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="text-white-50 mb-auto" style="color: #e8e8e8;">Test your core strength and endurance</p>
+                    <div class="btn-group-vertical w-100">
+                        <button class="btn mb-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px; transition: box-shadow 0.3s ease;" onclick="startExercise('sit-up')">
+                            <i class="fas fa-play"></i> Start Live Test
+                        </button>
+                        <button class="btn btn-secondary" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;" onclick="uploadVideo('sit-up')">
+                            <i class="fas fa-upload"></i> Upload Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upper Body -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card exercise-card h-100" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent text-center" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <i class="fas fa-hands fa-2x mb-2" style="color: #171e24;"></i>
+                    <h5 class="mb-0" style="color: #171e24;">Pull-up</h5>
+                    <small style="color: #171e24;">Upper Body</small>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="text-white-50 mb-auto" style="color: #e8e8e8;">Build upper body and back strength</p>
+                    <div class="btn-group-vertical w-100">
+                        <button class="btn mb-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px; transition: box-shadow 0.3s ease;" onclick="startExercise('pull-up')">
+                            <i class="fas fa-play"></i> Start Live Test
+                        </button>
+                        <button class="btn btn-secondary" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;" onclick="uploadVideo('pull-up')">
+                            <i class="fas fa-upload"></i> Upload Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card exercise-card h-100" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent text-center" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <i class="fas fa-hand-paper fa-2x mb-2" style="color: #171e24;"></i>
+                    <h5 class="mb-0" style="color: #171e24;">Push-up</h5>
+                    <small style="color: #171e24;">Upper Body</small>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="text-white-50 mb-auto" style="color: #e8e8e8;">Strengthen chest, shoulders, and triceps</p>
+                    <div class="btn-group-vertical w-100">
+                        <button class="btn mb-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px; transition: box-shadow 0.3s ease;" onclick="startExercise('push-up')">
+                            <i class="fas fa-play"></i> Start Live Test
+                        </button>
+                        <button class="btn btn-secondary" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;" onclick="uploadVideo('push-up')">
+                            <i class="fas fa-upload"></i> Upload Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lower Body -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card exercise-card h-100" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent text-center" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <i class="fas fa-running fa-2x mb-2" style="color: #171e24;"></i>
+                    <h5 class="mb-0" style="color: #171e24;">Squat</h5>
+                    <small style="color: #171e24;">Lower Body</small>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="text-white-50 mb-auto" style="color: #e8e8e8;">Build leg and glute strength</p>
+                    <div class="btn-group-vertical w-100">
+                        <button class="btn mb-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px; transition: box-shadow 0.3s ease;" onclick="startExercise('squat')">
+                            <i class="fas fa-play"></i> Start Live Test
+                        </button>
+                        <button class="btn btn-secondary" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;" onclick="uploadVideo('squat')">
+                            <i class="fas fa-upload"></i> Upload Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cardio -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card exercise-card h-100" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent text-center" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <i class="fas fa-walking fa-2x mb-2" style="color: #171e24;"></i>
+                    <h5 class="mb-0" style="color: #171e24;">Walk</h5>
+                    <small style="color: #171e24;">Cardio</small>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="text-white-50 mb-auto" style="color: #e8e8e8;">Basic cardio movement assessment</p>
+                    <div class="btn-group-vertical w-100">
+                        <button class="btn mb-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px; transition: box-shadow 0.3s ease;" onclick="startExercise('walk')">
+                            <i class="fas fa-play"></i> Start Live Test
+                        </button>
+                        <button class="btn btn-secondary" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;" onclick="uploadVideo('walk')">
+                            <i class="fas fa-upload"></i> Upload Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Power -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card exercise-card h-100" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent text-center" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <i class="fas fa-arrow-up fa-2x mb-2" style="color: #171e24;"></i>
+                    <h5 class="mb-0" style="color: #171e24;">Vertical Jump</h5>
+                    <small style="color: #171e24;">Power</small>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="text-white-50 mb-auto" style="color: #e8e8e8;">Measure explosive vertical power</p>
+                    <div class="btn-group-vertical w-100">
+                        <button class="btn mb-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px; transition: box-shadow 0.3s ease;" onclick="startExercise('vertical-jump')">
+                            <i class="fas fa-play"></i> Start Live Test
+                        </button>
+                        <button class="btn btn-secondary" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;" onclick="uploadVideo('vertical-jump')">
+                            <i class="fas fa-upload"></i> Upload Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lower Body Power -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card exercise-card h-100" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent text-center" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <i class="fas fa-long-arrow-alt-right fa-2x mb-2" style="color: #171e24;"></i>
+                    <h5 class="mb-0" style="color: #171e24;">Broad Jump</h5>
+                    <small style="color: #171e24;">Lower Body Power</small>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="text-white-50 mb-auto" style="color: #e8e8e8;">Test horizontal jumping power</p>
+                    <div class="btn-group-vertical w-100">
+                        <button class="btn mb-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px; transition: box-shadow 0.3s ease;" onclick="startExercise('broad-jump')">
+                            <i class="fas fa-play"></i> Start Live Test
+                        </button>
+                        <button class="btn btn-secondary" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;" onclick="uploadVideo('broad-jump')">
+                            <i class="fas fa-upload"></i> Upload Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprint Power -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card exercise-card h-100" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent text-center" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <i class="fas fa-bolt fa-2x mb-2" style="color: #171e24;"></i>
+                    <h5 class="mb-0" style="color: #171e24;">Standing Start</h5>
+                    <small style="color: #171e24;">Sprint Power</small>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="text-white-50 mb-auto" style="color: #e8e8e8;">Sprint acceleration test</p>
+                    <div class="btn-group-vertical w-100">
+                        <button class="btn mb-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px; transition: box-shadow 0.3s ease;" onclick="startExercise('standing-start')">
+                            <i class="fas fa-play"></i> Start Live Test
+                        </button>
+                        <button class="btn btn-secondary" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;" onclick="uploadVideo('standing-start')">
+                            <i class="fas fa-upload"></i> Upload Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agility -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card exercise-card h-100" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent text-center" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <i class="fas fa-exchange-alt fa-2x mb-2" style="color: #171e24;"></i>
+                    <h5 class="mb-0" style="color: #171e24;">Shuttle Run</h5>
+                    <small style="color: #171e24;">Agility</small>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="text-white-50 mb-auto" style="color: #e8e8e8;">Test agility and direction change</p>
+                    <div class="btn-group-vertical w-100">
+                        <button class="btn mb-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px; transition: box-shadow 0.3s ease;" onclick="startExercise('shuttle-run')">
+                            <i class="fas fa-play"></i> Start Live Test
+                        </button>
+                        <button class="btn btn-secondary" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;" onclick="uploadVideo('shuttle-run')">
+                            <i class="fas fa-upload"></i> Upload Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Endurance -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card exercise-card h-100" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent text-center" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <i class="fas fa-clock fa-2x mb-2" style="color: #171e24;"></i>
+                    <h5 class="mb-0" style="color: #171e24;">800m Run</h5>
+                    <small style="color: #171e24;">Endurance</small>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="text-white-50 mb-auto" style="color: #e8e8e8;">Middle distance running test</p>
+                    <div class="btn-group-vertical w-100">
+                        <button class="btn mb-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px; transition: box-shadow 0.3s ease;" onclick="startExercise('800m-run')">
+                            <i class="fas fa-play"></i> Start Live Test
+                        </button>
+                        <button class="btn btn-secondary" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;" onclick="uploadVideo('800m-run')">
+                            <i class="fas fa-upload"></i> Upload Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medicine Ball - ADDED -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card exercise-card h-100" style="background: #171a21; border: 1px solid #26ff5f; border-radius: 12px;">
+                <div class="card-header bg-accent text-center" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; border-radius: 12px 12px 0 0;">
+                    <i class="fas fa-baseball-ball fa-2x mb-2" style="color: #171e24;"></i>
+                    <h5 class="mb-0" style="color: #171e24;">Medicine Ball Throw</h5>
+                    <small style="color: #171e24;">Core Power</small>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="text-white-50 mb-auto" style="color: #e8e8e8;">Explosive core and arm power test</p>
+                    <div class="btn-group-vertical w-100">
+                        <button class="btn mb-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px; transition: box-shadow 0.3s ease;" onclick="startExercise('medicine-ball')">
+                            <i class="fas fa-play"></i> Start Live Test
+                        </button>
+                        <button class="btn btn-secondary" style="background-color: #1f2229; border: 1px solid #26ff5f; color: #26ff5f; border-radius: 10px;" onclick="uploadVideo('medicine-ball')">
+                            <i class="fas fa-upload"></i> Upload Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Badges Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="text-accent mb-3" style="color: #DFFF34; font-weight: 800;">Your Achievements</h3>
+            {% if badges %}
+            <div class="badges-container">
+                {% for badge in badges %}
+                <span class="badge me-2 mb-2 p-2" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px;">
+                    <i class="fas fa-medal me-1"></i>{{ badge }}
+                </span>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-white-50" style="color: #e8e8e8;">Complete exercises to earn badges!</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3 class="text-accent mb-3" style="color: #DFFF34; font-weight: 800;">Recent Activities</h3>
+            {% if recent_activities %}
+            <div class="table-responsive">
+                <table class="table table-dark table-striped" style="background: #171a21; border: 1px solid #26ff5f;">
+                    <thead style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24;">
+                        <tr>
+                            <th style="color: #171e24;">Exercise</th>
+                            <th style="color: #171e24;">Score/Count</th>
+                            <th style="color: #171e24;">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for activity in recent_activities %}
+                        <tr>
+                            <td style="color: #e8e8e8;">{{ activity.type }}</td>
+                            <td style="color: #e8e8e8;">{{ activity.count }}</td>
+                            <td style="color: #e8e8e8;">{{ activity.timestamp.strftime('%Y-%m-%d %H:%M') if activity.timestamp else 'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-white-50" style="color: #e8e8e8;">No recent activities. Start your first exercise!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Hidden file input for video upload -->
+<input type="file" id="videoUpload" accept="video/*" style="display: none;" />
+
+<script>
+let currentExercise = '';
+
+function startExercise(exerciseType) {
+    if (confirm(`Start ${exerciseType.replace('-', ' ')} exercise?`)) {
+        // Show simple loading message
+        const originalContent = document.body.innerHTML;
+        document.body.innerHTML = `
+            <div class="container text-center mt-5">
+                <div class="spinner-border" role="status" style="color:#26ff5f;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h3 class="text-white mt-3">Starting ${exerciseType.replace('-', ' ')} exercise...</h3>
+                <p class="text-white-50">Please wait while we set up your assessment.</p>
+            </div>
+        `;
+        
+        // Redirect to start exercise route
+        window.location.href = `/start_exercise/${exerciseType}`;
+    }
+}
+
+function uploadVideo(exerciseType) {
+    currentExercise = exerciseType;
+    document.getElementById('videoUpload').click();
+}
+
+document.getElementById('videoUpload').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const formData = new FormData();
+        formData.append('exercise_video', file);
+        
+        // Show loading message
+        const originalContent = document.body.innerHTML;
+        document.body.innerHTML = `
+            <div class="container text-center mt-5">
+                <div class="spinner-border" role="status" style="color:#26ff5f;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h3 class="text-white mt-3">Processing ${currentExercise.replace('-', ' ')} video...</h3>
+                <p class="text-white-50">Please wait while we analyze your performance.</p>
+            </div>
+        `;
+        
+        fetch(`/upload_exercise/${currentExercise}`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                throw new Error('Upload failed');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.body.innerHTML = originalContent;
+            alert('Failed to upload video. Please try again.');
+        });
+    }
+});
+
+// Simple hover effects without heavy glow
+document.querySelectorAll('.exercise-card').forEach(card => {
+    card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-3px)';
+        this.style.transition = 'all 0.3s ease';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+    });
+});
+</script>
+{% endblock %}

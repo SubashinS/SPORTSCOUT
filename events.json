@@ -1,0 +1,61 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "title": "National Athletics Championship 2025",
+      "description": "Annual national level athletics competition featuring track and field events for all age categories.",
+      "date": "2025-10-15",
+      "time": "09:00 AM",
+      "venue": "Jawaharlal Nehru Stadium, New Delhi",
+      "sport": "Athletics",
+      "category": "National",
+      "registration_deadline": "2025-09-30",
+      "registration_link": "https://example.com/register"
+    },
+    {
+      "id": 2,
+      "title": "Inter-State Swimming Championship",
+      "description": "Competition between state swimming teams across various swimming disciplines and age groups.",
+      "date": "2025-11-05",
+      "time": "10:00 AM",
+      "venue": "Sports Authority of India Aquatic Center, Bangalore",
+      "sport": "Swimming",
+      "category": "Inter-State",
+      "registration_deadline": "2025-10-20",
+      "registration_link": "https://example.com/swimming-register"
+    },
+    {
+      "id": 3,
+      "title": "Youth Basketball Tournament",
+      "description": "U-18 basketball tournament featuring teams from across the country competing for the national title.",
+      "date": "2025-12-10",
+      "time": "02:00 PM",
+      "venue": "KD Jadhav Indoor Hall, New Delhi",
+      "sport": "Basketball",
+      "category": "Youth",
+      "registration_deadline": "2025-11-25"
+    },
+    {
+      "id": 4,
+      "title": "Regional Football Championship 2024",
+      "description": "Regional level football competition that was held last month featuring local clubs and academy teams.",
+      "date": "2025-09-15",
+      "time": "04:00 PM",
+      "venue": "Salt Lake Stadium, Kolkata",
+      "sport": "Football",
+      "category": "Regional",
+      "results": "Winner: Bengal FC Academy"
+    },
+    {
+      "id": 5,
+      "title": "School Wrestling Competition",
+      "description": "Inter-school wrestling championship held for students from grades 9-12.",
+      "date": "2025-09-10",
+      "time": "11:00 AM",
+      "venue": "Indira Gandhi Stadium, New Delhi",
+      "sport": "Wrestling",
+      "category": "School Level",
+      "results": "Winner: DPS RK Puram"
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container bg-content rounded-3 p-4 mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-user-plus fa-3x text-accent mb-3"></i>
+                        <h2 class="text-accent">Join SportScout</h2>
+                        <p class="text-muted">Start your fitness journey today</p>
+                    </div>
+
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label class="form-label text-white">
+                                <i class="fas fa-user me-1"></i>Full Name *
+                            </label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-white">
+                                <i class="fas fa-envelope me-1"></i>Email *
+                            </label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-white">
+                                <i class="fas fa-lock me-1"></i>Password *
+                            </label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-white">
+                                    <i class="fas fa-birthday-cake me-1"></i>Age
+                                </label>
+                                <input type="number" class="form-control" name="age" min="10" max="100">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-white">
+                                    <i class="fas fa-venus-mars me-1"></i>Gender
+                                </label>
+                                <select class="form-select" name="gender">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-white">
+                                    <i class="fas fa-ruler-vertical me-1"></i>Height (cm)
+                                </label>
+                                <input type="number" class="form-control" name="height" min="50" max="300" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-white">
+                                    <i class="fas fa-weight me-1"></i>Weight (kg)
+                                </label>
+                                <input type="number" class="form-control" name="weight" min="10" max="500" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-white">
+                                <i class="fas fa-map-marker-alt me-1"></i>Location
+                            </label>
+                            <input type="text" class="form-control" name="location" placeholder="City, State">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-white">
+                                <i class="fas fa-user-cog me-1"></i>Account Type
+                            </label>
+                            <select class="form-select" name="role">
+                                <option value="user">Athlete</option>
+                                <option value="admin">SAI Administrator</option>
+                            </select>
+                            <div class="form-text">
+                                Select "SAI Administrator" if you are authorized by Sports Authority of India
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-accent btn-lg">
+                                <i class="fas fa-user-plus me-1"></i>Create Account
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <p class="text-white mb-2">Already have an account?</p>
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-light">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

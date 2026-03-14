@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+{% block title %}Personal Dashboard{% endblock %}
+
+{% block content %}
+<div class="container bg-content rounded-3 p-4 mt-4">
+
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="text-accent mb-3" style="color:#DFFF34;font-weight:800">
+        <i class="fas fa-user-chart me-2" style="color:#26ff5f"></i>
+        Personal Performance Dashboard
+      </h2>
+      <p class="text-white mb-0" style="color:#e8e8e8;">
+        Welcome back, {{ username }}! Track your individual progress and achievements.
+      </p>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3 col-sm-6 mb-3"><div class="card bg-dark stat-card"><div class="card-body text-center">
+      <i class="fas fa-star text-accent fa-2x mb-2"></i>
+      <h3 class="text-accent">{{ userstats.points }}</h3>
+      <p class="text-muted mb-0">Total Points</p>
+    </div></div></div>
+    <div class="col-md-3 col-sm-6 mb-3"><div class="card bg-dark stat-card"><div class="card-body text-center">
+      <i class="fas fa-medal text-accent fa-2x mb-2"></i>
+      <h3 class="text-accent">{{ userstats.badgescount }}</h3>
+      <p class="text-muted mb-0">Badges Earned</p>
+    </div></div></div>
+    <div class="col-md-3 col-sm-6 mb-3"><div class="card bg-dark stat-card"><div class="card-body text-center">
+      <i class="fas fa-fire text-accent fa-2x mb-2"></i>
+      <h3 class="text-accent">{{ userstats.streak }}</h3>
+      <p class="text-muted mb-0">Day Streak</p>
+    </div></div></div>
+    <div class="col-md-3 col-sm-6 mb-3"><div class="card bg-dark stat-card"><div class="card-body text-center">
+      <i class="fas fa-level-up-alt text-accent fa-2x mb-2"></i>
+      <h3 class="text-accent">{{ userstats.level }}</h3>
+      <p class="text-muted mb-0">Current Level</p>
+    </div></div></div>
+  </div>
+
+  <!-- Badges -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <h3 class="text-accent mb-3" style="color:#DFFF34;font-weight:800">Your Achievements</h3>
+      <p class="text-muted">Total Badges: {{ badges|length }}</p>
+      {% if badges %}
+      <div class="d-flex flex-wrap">
+        {% for badge in badges %}
+          <div class="badge-card bg-dark text-center p-3 m-2">
+            <i class="fas fa-medal fa-2x text-accent mb-1"></i>
+            <div class="text-white">{{ badge.name }}</div>
+          </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-muted">No badges earned yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="row mt-4">
+    <div class="col-md-6 mb-4">
+      <div class="card bg-dark">
+        <div class="card-header d-flex justify-content-between align-items-center text-accent">
+          <span>Progress Trend</span>
+          <div>
+            <button id="exportTrendCsv" class="btn btn-sm btn-outline-light me-1" title="Export CSV">
+              <i class="fas fa-file-csv"></i>
+            </button>
+            <button id="exportTrendPdf" class="btn btn-sm btn-outline-light" title="Export PDF">
+              <i class="fas fa-file-pdf"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <canvas id="trendChart" data-activities='{{ recentactivities | tojson if recentactivities else "[]" }}'></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card bg-dark">
+        <div class="card-header d-flex justify-content-between align-items-center text-accent">
+          <span>Personal Records</span>
+          <div>
+            <button id="exportRecordsCsv" class="btn btn-sm btn-outline-light me-1" title="Export CSV">
+              <i class="fas fa-file-csv"></i>
+            </button>
+            <button id="exportRecordsPdf" class="btn btn-sm btn-outline-light" title="Export PDF">
+              <i class="fas fa-file-pdf"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <canvas id="recordsChart"
+                  data-labels='{{ personal_records | map(attribute="name") | list | tojson if personal_records else "[]" }}'
+                  data-values='{{ personal_records | map(attribute="record") | list | tojson if personal_records else "[]" }}'>
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activities Table -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <h3 class="text-accent mb-3" style="color:#DFFF34;font-weight:800">Recent Activities</h3>
+      {% if recentactivities %}
+      <div class="table-responsive">
+        <table id="recentActivitiesTable" class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th>Exercise</th>
+              <th>Points</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for act in recentactivities %}
+            <tr>
+              <td>{{ act.exercise }}</td>
+              <td>{{ act.points }}</td>
+              <td>{{ act.timestamp.strftime('%Y-%m-%d %H:%M') if act.timestamp else 'NA' }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="text-muted">No recent activities. Start your first exercise!</p>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+<!-- jQuery, Bootstrap, Chart.js -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<!-- DataTables & Buttons -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+
+<!-- Export Helpers -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const recCanvas = document.getElementById('recordsChart');
+  const recLabels = JSON.parse(recCanvas.dataset.labels || '[]');
+  const recValues = JSON.parse(recCanvas.dataset.values || '[]');
+  const recChart  = new Chart(recCanvas, {
+    type: 'bar',
+    data: {
+      labels: recLabels,
+      datasets: [{ label: 'Personal Records', data: recValues, backgroundColor: '#26ff5f' }]
+    },
+    options: { scales: { y: { beginAtZero: true } } }
+  });
+
+  const tCanvas = document.getElementById('trendChart');
+  const activities = JSON.parse(tCanvas.dataset.activities || '[]');
+  const dateMap = {};
+  activities.forEach(act => {
+    if (act.timestamp) {
+      const date = act.timestamp.split('T')[0];
+      dateMap[date] = (dateMap[date] || 0) + (act.points || 0);
+    }
+  });
+  const trendDates = Object.keys(dateMap).sort();
+  const trendValues = trendDates.map(date => dateMap[date]);
+  const trendChart = new Chart(tCanvas, {
+    type: 'line',
+    data: { labels: trendDates, datasets: [{ label: 'Points Progress', data: trendValues, borderColor: '#26ff5f', fill: false }] },
+    options: { scales: { y: { beginAtZero: true } } }
+  });
+
+  function exportCsv(chart, filename) {
+    const csv = chart.data.labels.join(',') + '\n' + chart.data.datasets[0].data.join(',');
+    const link = document.createElement('a');
+    link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    link.download = filename + '.csv';
+    link.click();
+  }
+  function exportPdf(canvasId, filename) {
+    html2canvas(document.getElementById(canvasId)).then(cnv => {
+      const imgData = cnv.toDataURL('image/png');
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('l', 'pt', [cnv.width, cnv.height]);
+      pdf.addImage(imgData, 'PNG', 0, 0, cnv.width, cnv.height);
+      pdf.save(filename + '.pdf');
+    });
+  }
+  document.getElementById('exportTrendCsv').onclick = () => exportCsv(trendChart, 'progress_trend');
+  document.getElementById('exportTrendPdf').onclick = () => exportPdf('trendChart', 'progress_trend');
+  document.getElementById('exportRecordsCsv').onclick = () => exportCsv(recChart, 'personal_records');
+  document.getElementById('exportRecordsPdf').onclick = () => exportPdf('recordsChart', 'personal_records');
+
+  $('#recentActivitiesTable').DataTable({
+    dom: 'Bfrtip',
+    buttons: [
+      { extend: 'csvHtml5', title: 'recent_activities' },
+      { extend: 'pdfHtml5', title: 'recent_activities', orientation: 'landscape', pageSize: 'A4', customize: doc => { doc.defaultStyle.fontSize = 10; doc.styles.tableHeader.fontSize = 12; } }
+    ],
+    order: [[2, 'desc']]
+  });
+});
+</script>
+{% endblock %}

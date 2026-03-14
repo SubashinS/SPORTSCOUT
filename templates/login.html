@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="login-bg-container"></div>
+
+<div class="row justify-content-center" style="min-height: 80vh; align-items: center; position: relative; z-index: 1;">
+  <div class="col-md-5 col-lg-4">
+    <div class="card shadow" style="background: #171a21; border-radius: 12px; border: 1px solid #26ff5f;">
+      <div class="card-body p-4">
+        <h3 class="text-center mb-4" style="color: #DFFF34; font-weight: 800; font-family: 'Bebas Neue', cursive;">Login</h3>
+        <form method="post">
+          <div class="mb-3">
+            <label class="form-label text-white fw-semibold">Email</label>
+            <input class="form-control" name="email" type="email" required style="background-color: #1f2229; border: 1px solid #26ff5f; color: #e8e8e8;" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-white fw-semibold">Password</label>
+            <input class="form-control" name="password" type="password" required style="background-color: #1f2229; border: 1px solid #26ff5f; color: #e8e8e8;" />
+          </div>
+          <button class="btn w-100" style="background: linear-gradient(90deg, #26ff5f 0%, #ffe648 100%); color: #171e24; font-weight: 700; border-radius: 10px; transition: box-shadow 0.3s ease;">
+            Login
+          </button>
+        </form>
+        <div class="text-center mt-3" style="color: #e8e8e8;">
+          New? <a href="{{ url_for('register') }}" style="color: #DFFF34; font-weight: 600;">Create account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.login-bg-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("{{ url_for('static', filename='image1.png') }}") no-repeat center center;
+  background-size: contain;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+</style>
+{% endblock %}

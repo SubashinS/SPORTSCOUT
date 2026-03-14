@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h1 class="display-1 text-danger neon-500">500</h1>
+    <h2 class="mb-4 neon-text">Internal Server Error</h2>
+    <p class="text-white-50 mb-4">Sorry, something went wrong on our side.</p>
+    <div class="error-animation mb-4">
+        <i class="fas fa-exclamation-triangle fa-3x text-danger neon-icon"></i>
+    </div>
+    <a href="{{ url_for('home') }}" class="btn neon-btn-primary btn-lg">
+        <i class="fas fa-home me-2"></i>Go Home
+    </a>
+</div>
+
+<style>
+.neon-500 {
+    font-size: 8rem;
+    text-shadow: 0 0 20px #dc3545, 0 0 40px #dc3545;
+    animation: pulse500 2s ease-in-out infinite;
+}
+
+@keyframes pulse500 {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+.neon-text {
+    text-shadow: 0 0 15px var(--accent-color);
+    color: var(--accent-color);
+}
+
+.neon-icon {
+    filter: drop-shadow(0 0 10px currentColor);
+    animation: warningPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes warningPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.error-animation {
+    animation: shake 2s ease-in-out infinite;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+    20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+.neon-btn-primary {
+    background: linear-gradient(45deg, var(--accent-color), var(--neon-color, #00ff41));
+    border: none;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(243, 156, 18, 0.3);
+    transition: all 0.3s ease;
+    padding: 12px 30px;
+    border-radius: 25px;
+}
+
+.neon-btn-primary:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px rgba(243, 156, 18, 0.6);
+    background: linear-gradient(45deg, var(--neon-color, #00ff41), var(--accent-color));
+}
+
+:root {
+    --accent-color: #f39c12;
+    --neon-color: #00ff41;
+}
+</style>
+{% endblock %}

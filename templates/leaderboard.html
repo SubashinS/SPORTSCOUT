@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container bg-content rounded-3 p-4 mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-accent mb-4"><i class="fas fa-trophy me-2"></i>Leaderboard</h2>
+            <p class="text-white mb-4">See how you rank against other athletes</p>
+            <!-- Filter Options -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="text-accent mb-0">🏆 Top Athletes</h5>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-accent active rounded-start" onclick="sortBy('points')">
+                                        <i class="fas fa-star"></i> Points
+                                    </button>
+                                    <button class="btn btn-outline-light" onclick="sortBy('streak')">
+                                        <i class="fas fa-fire"></i> Streak
+                                    </button>
+                                    <button class="btn btn-outline-light rounded-end" onclick="sortBy('badges')">
+                                        <i class="fas fa-medal"></i> Badges
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Leaderboard Table -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="leaderboardTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Rank</th>
+                                            <th>Athlete</th>
+                                            <th>Location</th>
+                                            <th>Points</th>
+                                            <th>Level</th>
+                                            <th>Badges</th>
+                                            <th>Streak</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in board %}
+                                        <tr class="athlete-row" data-points="{{ user.points }}" data-streak="{{ user.streak }}" data-badges="{{ user.badges }}">
+                                            <td>
+                                                {% if loop.index == 1 %}
+                                                <span class="rank-badge gold"><i class="fas fa-crown"></i> #1</span>
+                                                {% elif loop.index == 2 %}
+                                                <span class="rank-badge silver"><i class="fas fa-medal"></i> #2</span>
+                                                {% elif loop.index == 3 %}
+                                                <span class="rank-badge bronze"><i class="fas fa-medal"></i> #3</span>
+                                                {% else %}
+                                                <span class="rank-badge">#{{ loop.index }}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="athlete-avatar me-2">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                    <div>
+                                                        <strong style="color: black;">{{ user.name }}</strong>
+                                                        {% if loop.index <= 3 %}
+                                                        <br><small class="text-accent">Top Performer</small>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="color: black;">{{ user.location or 'Not specified' }}</td>
+                                            <td>
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-star me-1"></i>{{ user.points }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-primary">
+                                                    Level {{ (user.points // 1000) + 1 }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-primary">
+                                                    <i class="fas fa-award me-1"></i>{{ user.badges }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="streak-badge {{ 'hot-streak' if user.streak > 7 else '' }}">
+                                                    <i class="fas fa-fire me-1"></i>{{ user.streak }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Statistics Cards -->
+            <div class="row stats-row">
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-users text-accent fa-2x mb-2"></i>
+                            <h3 class="text-accent">{{ board|length }}</h3>
+                            <p class="text-muted mb-0">Total Athletes</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-star text-accent fa-2x mb-2"></i>
+                            <h3 class="text-accent">{{ board[0].points if board else 0 }}</h3>
+                            <p class="text-muted mb-0">Highest Points</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-fire text-accent fa-2x mb-2"></i>
+                            <h3 class="text-accent">{{ board | map(attribute='streak') | max if board else 0 }}</h3>
+                            <p class="text-muted mb-0">Longest Streak</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-medal text-accent fa-2x mb-2"></i>
+                            <h3 class="text-accent">{{ board | map(attribute='badges') | max if board else 0 }}</h3>
+                            <p class="text-muted mb-0">Most Badges</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function sortBy(criteria) {
+    const table = document.getElementById('leaderboardTable');
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    // Remove active class from all buttons
+    document.querySelectorAll('.btn-group .btn').forEach(btn => btn.classList.remove('active'));
+    // Add active class to clicked button
+    event.target.classList.add('active');
+    // Sort rows
+    rows.sort((a, b) => {
+        let aVal, bVal;
+        if (criteria === 'points') {
+            aVal = parseInt(a.getAttribute('data-points')); bVal = parseInt(b.getAttribute('data-points'));
+        } else if (criteria === 'streak') {
+            aVal = parseInt(a.getAttribute('data-streak')); bVal = parseInt(b.getAttribute('data-streak'));
+        } else if (criteria === 'badges') {
+            aVal = parseInt(a.getAttribute('data-badges')); bVal = parseInt(b.getAttribute('data-badges'));
+        }
+        return bVal - aVal;
+    });
+    // Update ranks and append sorted rows
+    rows.forEach((row, index) => {
+        const rankCell = row.cells[0];
+        let rankHTML;
+        if (index === 0) {
+            rankHTML = '<span class="rank-badge gold"><i class="fas fa-crown"></i> #1</span>';
+        } else if (index === 1) {
+            rankHTML = '<span class="rank-badge silver"><i class="fas fa-medal"></i> #2</span>';
+        } else if (index === 2) {
+            rankHTML = '<span class="rank-badge bronze"><i class="fas fa-medal"></i> #3</span>';
+        } else {
+            rankHTML = `<span class="rank-badge">#${index + 1}</span>`;
+        }
+        rankCell.innerHTML = rankHTML;
+        tbody.appendChild(row);
+    });
+}
+// Add hover effects
+document.querySelectorAll('.athlete-row').forEach(row => {
+    row.addEventListener('mouseenter', function() {
+        this.style.backgroundColor = '#26ff5f22';
+        this.style.transform = 'scale(1.02)';
+        this.style.transition = 'all 0.2s ease';
+    });
+    row.addEventListener('mouseleave', function() {
+        this.style.backgroundColor = '';
+        this.style.transform = 'scale(1)';
+    });
+});
+</script>
+{% endblock %}
